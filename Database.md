@@ -1,12 +1,15 @@
 # **DATABASE**
+
 __Relational Database__ are databases that has relationship between multiple tables.
 
 Relational database has :
+
 - tables - high level groupings of data.
 - columns - define the data that each row in a table contains
 - rows - contains the actual data that consists of values for each column in the table.
 
 structure of a relational db is similar to classes & objects in kotlin.
+
 ```kotlin
 data class Student(
     id: Int,
