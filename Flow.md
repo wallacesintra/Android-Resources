@@ -5,7 +5,7 @@ opposed to suspended fun that emit only single value.
 
 **Flow** - conceptually stream of data can be computed asynchronously. value of the same type.
 
-## **Entities invloved in stream of data__
+## **Entities invloved in stream of data**
 
 1. **Producer**: produces data, can be asynchronously.
 2. **(Optional)Intermediaries**: modify the value emitted.
