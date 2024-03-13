@@ -98,6 +98,11 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
 
 * read the JSON, Call ReadJSONFromAssets by passing an activity or composable's context and the name of the JSON file.
 
+```kotlin
+val jsonString = ReadJSONFromAssets(baseContent, "en.json")
+val data = Gson().fromJson(jsonString, UIContent::class.java)
+```
+
 ## 5.Add Gson to project
 
 need Gson library
@@ -116,3 +121,8 @@ val data = Gson().fromJson(jsonString, UIContent::class.java)
 ## 7.Implement the data
 
 To use the data, use dot notation with parameters that match the class that you created in Step Three (i.e. data.sample.sampleString or data.sampleTwo.sampleB.aSampleString).
+
+```kotlin
+data.sample.sampleString
+data.sampleTwo.sampleB.aSampleString
+```
