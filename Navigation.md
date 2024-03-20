@@ -98,3 +98,65 @@ android {
     }
 }
 ```
+
+to link the items in a bottom navigation bar to routes in the navigation graph. it is recommended to define a sealed class, such as Screen that contains the route and String resources ID for the destinations.
+
+```kotlin
+sealed class Screen(val route: String, @StringRes val resourceId: Int){
+    object Profile: Screen("profile", R.string.profile)
+    object FriendsList: Screen("friendslist", R.string.friends_list)
+}
+```
+
+then place those items in a list that can be used by the BottomNavigationItem:
+
+```kotlin
+val items = listOf(
+    Screen.Profile,
+    Screen.FriendsList,
+)
+```
+
+In the BottomNavigation composable, get the current NavBackStackEntry using the currentBackStackEntryAsState() function.
+This entry gives you access to the current NavDestination. The selected state of each BottomNavigationItem can then be determined by comparing the item's route with the route of the current destination and its parent destinations to handle cases when you are using nested navigation using the NavDestination hierarchy.
+
+The item's route is also used to connect the onClick lambda to a call to navigate so that tapping on the item navigates to that item. By using the saveState and restoreState flags, the state and back stack of that item is correctly saved and restored as you swap between bottom navigation items.
+
+```kotlin
+val navController = rememberNavController()
+Scaffold(
+    bottomBar = {
+        BottomNavigation {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry ?.destination
+
+            items.forEach { screen ->
+                BottomNavigationItem(
+                    icon = { Icon(Icons.Filled.Favorite, contentDescription = null)},
+                    label = { Text(stringResource(screen.resourceId))},
+                    selected = currentDestination ?.hierarchy?.any {it.route == screen.route} == true,
+                    onClick = {
+                        navController.navigate(screen.route) {
+                            // pop up to start destination to the graph to avoid building up a large stack of destinations on the back stack as users select items
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            // avoid multiple copies of the same destination when
+                            // reselecting the same item
+                            launchSingleTop = true
+                            // restore state when reselecting a previously selected item
+                            restoreState = true
+                        }
+                    }
+                )
+            }
+        }
+    }
+){ innerPadding ->
+    NavHost(navController, startDestination = Screen.Profile.route, Modifier.padding(innerPadding))
+    {
+        composable(Screen.Profile.route) { Profile(navController) }
+        composable(Screen.FriendsList.route) { FriendsList(navController) }
+    }
+}
+```
