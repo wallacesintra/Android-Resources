@@ -26,7 +26,6 @@ you can hoist it higher in the UI hierarchy. this makes your composables more re
 _Plain state holder class as state owner_
 State holder holds complex UI logic that involves one/multiple state fields of a UI element.
 
-
 ### Business Logic
 
 screen level state holder is in charge:
