@@ -105,6 +105,9 @@ id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 * in the dependencies, add:
 
 ```kotlin
+// Kotlin serialization 
+implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
 // Retrofit with Kotlin serialization Converter
 
 implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
@@ -130,4 +133,17 @@ data class MarsPhoto(
     @SerialName(value = "img_src") 
     val imgSrc: String
 )
+```
+
+### API Services
+
+```kotlin
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType
+
+private val retrofit = Retrofit.Builder()
+        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .baseUrl(BASE_URL)
+        .build()
 ```
