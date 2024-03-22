@@ -83,3 +83,51 @@ private fun getMarsPhotos() {
 ```kotlin
 <uses-permission android:name="android.permission.INTERNET" />
 ```
+
+## Parse a JSON response with kotlinx.serialization
+
+*Serialization* - process of converting data used by an application to a format that can be transferred over a network.
+
+*Deserialization* - process of reading data from external source and converting it into a runtime object.
+
+[kotlinx.serialization] - has a set of libraries that a JSON string into kotlin objects.
+
+### add kotlinx.serialization library dependencies
+
+* open build.gradle.kts (Module :app)
+* in the plugin block, add kotlinx serialization plugin.
+
+```kotlin
+id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
+
+```
+
+* in the dependencies, add:
+
+```kotlin
+// Retrofit with Kotlin serialization Converter
+
+implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+implementation("com.squareup.okhttp3:okhttp:4.11.0")
+```
+
+### create a data class that will store the parsed results
+
+kotlinx.serialization parses this JSON data and converts it into Kotlin objects. To do this, kotlinx.serialization needs to have a Kotlin data class to store the parsed results.
+
+create file of the data class
+
+e.g:
+
+```kotlin
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
+
+
+@Serializable
+data class MarsPhoto(
+    val id: String,
+    @SerialName(value = "img_src") 
+    val img_src: String
+)
+```
