@@ -75,3 +75,11 @@ private fun getMarsPhotos() {
     }
 }
 ```
+
+## Androids Permission - Internet Premission
+
+1. Open  manifests/AndroidManifest.xml. add the following before the <application> tag:
+
+```kotlin
+<uses-permission android:name="android.permission.INTERNET" />
+```
