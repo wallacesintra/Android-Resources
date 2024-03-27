@@ -118,3 +118,43 @@ connect the application object to the application container.
         ...
     </application>
     ```
+
+## Add repository to ViewModel
+
+1. in the view model file, in the class declaration of the ViewModel, add a private constructor parameter of type of the repository.
+
+    ```kotlin
+
+    class MarsViewModel(private val marsPhotosRepository: MarsPhotosRepository) {}
+    ```
+
+2. implement a ViewModelProvider.Factory object, because ViewModel dont allow to pass values in the constructor when created.
+
+    ```kotlin
+    import androidx.lifecycle.ViewModelProvider
+    import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+    import androidx.lifecycle.viewModelScope
+    import androidx.lifecycle.viewmodel.initializer
+    import androidx.lifecycle.viewmodel.viewModelFactory
+    import com.example.marsphotos.MarsPhotosApplication
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val application = (this[APPLICATION_KEY] as MarsPhotosApplication)
+                val marsPhotosRepository = application.container.marsPhotosRepository
+                MarsViewModel(marsPhotosRepository = marsPhotosRepository)
+            }
+        }
+    }
+    ```
+
+3. in the composable file,
+
+    ```kotlin
+    Surface(
+        //...
+    ) {
+        val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
+    }
+    ```
