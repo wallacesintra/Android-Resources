@@ -42,3 +42,79 @@ eg MarsPhotosRepository.
     val marsPhotosRepository = NetworkMarsPhotosRepository()
     val listResult = marsPhotosRepository.getMarsPhotos()
     ```
+
+## Dependency injection
+
+Dependency, when a class needs another class to function.
+
+**Dependency Injection** is when a dependency is provided at runtime instead of being hardcoded into the calling class.
+
+A **container** is an object that contains the dependencies that the app requires.
+
+### create an Application container
+
+1. in the data package, select New > Kotlin Class/File.
+2. select Interface and enter Container name eg : AppContainer as the name of the interface.
+3. inside the interface:
+
+    ```kotlin
+    import retrofit2.Retrofit
+    import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+    import kotlinx.serialization.json.Json
+    import okhttp3.MediaType.Companion.toMediaType
+
+    interface AppContainer {
+        val marsPhotosRepository: MarsPhotosRepository
+    }
+
+    class DefaultAppContainer : AppContainer {
+        private val baseUrl = "https://android-kotlin-fun-mars-server.appspot.com"
+
+         /**
+        * Use the Retrofit builder to build a retrofit object using a kotlinx.serialization converter
+        */
+
+        private val retrofit = Retrofit.Builder()
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .baseUrl(baseUrl)
+            .build()
+        
+        private val retrofitService: MarsApiService by lazy {
+            retrofit.create(MarsApiService::class.java)
+        }
+    }
+    ```
+
+## Attach application container to the app
+
+connect the application object to the application container.
+
+1. in the main package, select New > Kotlin Class/File.
+
+2. In the dialog, enter MarsPhotosApplication. This class inherits from the application object, so you need to add it to the class declaration.
+
+    ```kotlin
+    import android.app.Application
+    import com.example.marsphotos.data.AppContainer
+    import com.example.marsphotos.data.DefaultAppContainer
+
+    class MarsPhotosApplication : Application() {
+        lateinit var container: AppContainer
+        override fun onCreate() {
+            super.onCreate()
+            container = DefaultAppContainer()
+        }
+    }
+    ```
+
+3. update the Android manifest, open manifests/AndroidManifest.xml
+
+4. In the application section, add the android:name attribute with a value of application class name ".MarsPhotosApplication".
+
+    ```xml
+    <application
+        android:name=".MarsPhotosApplication"
+        android:allowBackup="true"
+        ...
+    </application>
+    ```
