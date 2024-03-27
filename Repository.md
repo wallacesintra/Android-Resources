@@ -82,6 +82,11 @@ A **container** is an object that contains the dependencies that the app require
         private val retrofitService: MarsApiService by lazy {
             retrofit.create(MarsApiService::class.java)
         }
+
+        override val marsPhotosRepository: MarsPhotosRepository by lazy {
+            NetworkMarsPhotosRepository(retrofitService)
+        }
+
     }
     ```
 
@@ -158,3 +163,22 @@ connect the application object to the application container.
         val marsViewModel: MarsViewModel = viewModel(factory = MarsViewModel.Factory)
     }
     ```
+
+## set up for local tests
+
+### add local test dependencies
+
+* in app/build.gradle.kts.
+
+    ```kotlin
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    //in build.gradle.kts
+
+    ```
+
+### create local test directory
+
+1. create local test directory by right-clicking the src directory in the project view and selecting New > Directory > test/java.
+
+2. create a new package in the test directory named com.example.marsphotos.
