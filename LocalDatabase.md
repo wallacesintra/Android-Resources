@@ -1,5 +1,6 @@
 # **Save data in a local database using Room**
-**Setup**
+
+## Setup
 
 ```kotlin
 dependencies {
@@ -34,11 +35,13 @@ dependencies {
 ```
 
 ## **Primary components in Room**
+
 * Database class - holds the database, the main access point for connection to the app's persistent data.
 * Data entities - represent tables in the app database
 * Data access objects(DAOs) - provide methods that app can use to query, update, insert, and delete data in the database.
 
 ### **Data entity**
+
 User data entity. Each instance of User represents a row in the user table in the app's database.
 
 ```kotlin
@@ -51,6 +54,7 @@ data class User(
 ```
 
 ### **Data access object**
+
 DAO - provides the methods the app uses to interact with data in the user table.
 
 ```kotlin
@@ -75,10 +79,12 @@ interface UserDao {
 ```
 
 ### **Database**
+
 define AppDatabase class to hold the database.
 AppDatabase defines configuration and the app's main access point to persistent data.
 
 Database class must :
+
 1. be annotated with a @Database that includes an entities array that lists all of the data entities associated with the database.
 
 2. class must be an abstract class that extends RoomDatabase.
@@ -92,15 +98,9 @@ abstract class AppDatabase : RoomDatabase() {
 }
 ```
 
-
-
-*
 Note: If your app runs in a single process, you should follow the singleton design pattern when instantiating an AppDatabase object. Each RoomDatabase instance is fairly expensive, and you rarely need access to multiple instances within a single process.
 
-If your app runs in multiple processes, include enableMultiInstanceInvalidation() in your database builder invocation. That way, when you have an instance of AppDatabase in each process, you can invalidate the shared database file in one process, and this invalidation automatically propagates to the instances of AppDatabase within other processes.*
-
-
-**Usage**
+If your app runs in multiple processes, include enableMultiInstanceInvalidation() in your database builder invocation. That way, when you have an instance of AppDatabase in each process, you can invalidate the shared database file in one process, and this invalidation automatically propagates to the instances of AppDatabase within other processes.
 
 ```kotlin
 val db = Room.databaseBuilder(
