@@ -1,5 +1,7 @@
 # **DATABASE**
 
+289920
+
 __Relational Database__ are databases that has relationship between multiple tables.
 
 Relational database has :
@@ -24,6 +26,7 @@ data class Student(
 - objects, like rows, are the actual data. they contain values for each property defined in the class.
 
 # SQLite
+
 it is lightweight C library for relational database management with SQL.
 
 * Int - INTEGER 
