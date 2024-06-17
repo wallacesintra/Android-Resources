@@ -13,7 +13,7 @@ Each document is identified by a name.
 
 A document representing a user `alovelace` might look like this:
 
-```json
+```text
 first : "Ada"
 last : "Lovelace"
 born : 1815
@@ -21,7 +21,7 @@ born : 1815
 
 For example, you could structure the user's name from the example above with a map, like this:
 
-```json
+```text
 name :
     first : "Ada"
     last : "Lovelace"
@@ -34,7 +34,7 @@ Is container of documents
 
 eg: having a collection of users that have various users, each rep by a document.
 
-```json
+```text
 collections_bookmark users
 
     class alovelace
@@ -67,7 +67,7 @@ val alovelaceDocumentRef = db.document("users/alovelace")
 
 ### Hierarchical data
 
-```json
+```text
 collections_bookmark rooms
 
     class roomA
